@@ -9,8 +9,9 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0) {
-    char inByte = Serial.read();
     toggleLED();
+    char inByte = Serial.read();
+    analogWrite(3, inByte);
     Serial.write(inByte);    
   }
 }
