@@ -2,12 +2,12 @@
 #include<stdio.h>
 
 #define LED_PIN 13
-#define R_PIN 8
-#define G_PIN 9
-#define B_PIN 10
-#define frameBegin 255
+#define R_PIN 3
+#define G_PIN 5
+#define B_PIN 6
+#define frameBegin ((char) 255)
 
-int colors[] = {
+char colors[] = {
   0,0,0};
 
 void setup() {
@@ -17,18 +17,23 @@ void setup() {
   pinMode(G_PIN, OUTPUT);
   pinMode(B_PIN, OUTPUT);
   //  establishContact();
+  Serial.println("blah");
 }
 
 void loop() {
   if (Serial.available() > 0) {
     char inByte = Serial.read();
+    toggleLED();
     // Got a new frame
+    //Serial.println('S');
     if (inByte == frameBegin) {
+      //Serial.println('B');
       //write bass
       boolean allThree = true;
       for (int i=0; i < 3; i++) {
         char rgb = Serial.read();
         if (rgb == frameBegin) {
+          //Serial.println('F');
           allThree = false;
           break;
         }
@@ -37,7 +42,7 @@ void loop() {
         }
       }
       if (allThree) {
-        printRGB();
+        //printRGB();
         analogWrite(R_PIN, colors[0]);
         analogWrite(G_PIN, colors[1]);
         analogWrite(B_PIN, colors[2]);
@@ -48,10 +53,11 @@ void loop() {
 
 void printRGB() {
   Serial.print("rgb: ");
-  Serial.print(colors[0]);
+  Serial.print((uint8_t) colors[0]);
   Serial.print(" ");
-  Serial.print(colors[1]);
-  Serial.println(colors[2]);
+  Serial.print((uint8_t) colors[1]);
+  Serial.print(" ");
+  Serial.println((uint8_t) colors[2]);
 }
 
 void establishContact() {
