@@ -10,9 +10,10 @@ void setup()                    // run once, when the sketch starts
 void loop()                       // run over and over again
 {
   if (Serial.available() > 0) {
-    int inByte = Serial.read();
+    char inByte = Serial.read();
   //  analogWrite(3, inByte);
-    Serial.print("char read: " + inByte);
+    Serial.print("char read: ");
+    Serial.println(inByte);
   } 
 }
 
