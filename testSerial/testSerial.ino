@@ -13,7 +13,9 @@ void loop()                       // run over and over again
     char inByte = Serial.read();
   //  analogWrite(3, inByte);
     Serial.print("char read: ");
-    Serial.println(inByte);
+    delay(1);
+    Serial.println((int) inByte);
+    delay(1);
   } 
 }
 
