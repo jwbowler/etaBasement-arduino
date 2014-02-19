@@ -1,13 +1,12 @@
-
 #include<stdio.h>
 
 #define LED_PIN 13
 #define R_PIN 3
 #define G_PIN 5
 #define B_PIN 6
-#define frameBegin ((char) 255)
+#define frameBegin ((byte) 255)
 
-char colors[] = {
+byte colors[] = {
   0,0,0};
 
 void setup() {
@@ -22,33 +21,32 @@ void setup() {
 
 void loop() {
   if (Serial.available() > 0) {
-    char inByte = Serial.read();
+    byte inByte = Serial.read();
     toggleLED();
-    // Got a new frame
-    //Serial.println('S');
+    
     if (inByte == frameBegin) {
-      //Serial.println('B');
-      //write bass
-      boolean allThree = true;
+      
+      //boolean allThree = true;
       for (int i=0; i < 3; i++) {
-        char rgb = Serial.read();
+        while (!Serial.available()) { }
+        byte rgb = Serial.read();
         if (rgb == frameBegin) {
           //Serial.println('F');
-          allThree = false;
-          break;
+          //allThree = false;
+          //break;
+          return;
         }
         else {
           colors[i] = rgb;
         }
       }
-      if (allThree) {
-        //printRGB();
-        analogWrite(R_PIN, colors[0]);
-        analogWrite(G_PIN, colors[1]);
-        analogWrite(B_PIN, colors[2]);
-      }
+      //printRGB();
+      analogWrite(R_PIN, colors[0]);
+      analogWrite(G_PIN, colors[1]);
+      analogWrite(B_PIN, colors[2]);
     }
   }
+  delay(1);
 }
 
 void printRGB() {
