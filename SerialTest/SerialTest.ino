@@ -14,8 +14,6 @@
 
 byte colors[] = {
   0,0,0};
-  
-boolean allThree = true;
 
 void setup() {
   Serial.begin(9600);
@@ -40,15 +38,12 @@ void loop() {
     
     if (inByte == frameBegin) {
       
-
-      allThree = true;
       //GET BASS
       for (int i=0; i < 3; i++) {
         while (!Serial.available()) { }
         byte rgb = Serial.read();
         if (rgb == frameBegin) {
-          allThree = false;
-          break;
+          return;
         }
         else {
           colors[i] = rgb;
@@ -56,16 +51,13 @@ void loop() {
       }
       analogWrite(R_B_PIN, colors[0]);
       analogWrite(G_B_PIN, colors[1]);
-      analogWrite(B_B_PIN, colors[2]);
-      
+      analogWrite(B_B_PIN, colors[2]);   
       //GET MID
-      allThree = true;
       for (int i=0; i < 3; i++) {
         while (!Serial.available()) { }
         byte rgb = Serial.read();
         if (rgb == frameBegin) {
-          allThree = false;
-          break;
+          return;
         }
         else {
           colors[i] = rgb;
@@ -76,19 +68,16 @@ void loop() {
       analogWrite(B_M_PIN, colors[2]);
       
       //GET Treble
-      allThree = true;
       for (int i=0; i < 3; i++) {
         while (!Serial.available()) { }
         byte rgb = Serial.read();
         if (rgb == frameBegin) {
-          allThree = false;
-          break;
+          return;
         }
         else {
           colors[i] = rgb;
         }
       }
-      //printRGB();
       analogWrite(R_T_PIN, colors[0]);
       analogWrite(G_T_PIN, colors[1]);
       analogWrite(B_T_PIN, colors[2]);
